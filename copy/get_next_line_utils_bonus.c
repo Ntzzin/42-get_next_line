@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:45:54 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/19 15:57:53 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/19 13:15:51 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <get_next_line.h>
+#include "get_next_line_bonus.h"
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	unsigned char	*p;
+	size_t			n;
+	size_t			i;
+
+	n = nmemb * size;
+	p = malloc(n);
+	if (!p)
+		return (NULL);
+	i = 0;
+	while (i < n)
+		p[i++] = 0;
+	return ((void *)p);
+}
 
 /**
  * @brief Same core functionality as strlen(3) but with an adaptation to how

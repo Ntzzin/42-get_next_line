@@ -6,26 +6,26 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:37:04 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/13 15:19:00 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/19 11:29:33 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /**
- * @brief Flushes and repopulates the read() buffer while concatenating the
- * remaining data to the previous one with ft_memncat().
+ * @brief Flushes and repopulates the `buffer` while concatenating the
+ * remaining data (if any) to the any previous one with ft_memncat().
  * @param fd The file descriptor.
  * @param buffer The read() buffer.
- * @param res The address of where the result variable containing all the
+ * @param res The address to the variable containing all the
  * previously adquire data are stored.
  * @param i the index of the last characted computed.
  * @return The number of characters populated in the buffer.
  */
 static int	ft_flush(int fd, char *buffer, char **res, int i)
 {
-	int		n;
-	int		start;
+	int	n;
+	int	start;
 
 	start = ft_getidx(buffer);
 	*res = ft_memncat(*res, buffer, i - start);
@@ -40,13 +40,14 @@ static int	ft_flush(int fd, char *buffer, char **res, int i)
 	}
 	return (n);
 }
+
 /**
- * @brief Executes a verifying/setting procedure to ensure that there is 
- * no data loss, that means only reading from the file when all data when
- * processed by previous instances.
+ * @brief Executes a verifying/setting procedure to ensure that there is
+ * no data loss, that means only reading from the file when all data
+ * present in the buffer was consumed.
  * @param fd The file descriptor.
  * @param buffer The read() buffer.
- * @param i the address to the variable that holds the index of the last 
+ * @param i The address to the variable that holds the index of the last
  * characted computed.
  * @return The number of characters populated in the buffer.
  */

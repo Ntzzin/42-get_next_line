@@ -6,93 +6,85 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:37:04 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/09 20:11:12 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/19 15:57:57 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include <get_next_line.h>
 
-static size_t  ft_strlen(const char *s)
+/**
+ * @brief Flushes and repopulates the `buffer` while concatenating the
+ * remaining data (if any) to the any previous one with ft_memncat().
+ * @param fd The file descriptor.
+ * @param buffer The read() buffer.
+ * @param res The address to the variable containing all the
+ * previously adquire data are stored.
+ * @param i the index of the last characted computed.
+ * @return The number of characters populated in the buffer.
+ */
+static int	ft_flush(int fd, char *buffer, char **res, int i)
 {
-        size_t  i;
-        //printf("|strlen for '%s'|\n", s);
-        i = 0;
-        while (s[i]){
-            //printf("-char is '%c'\n", s[i]);
-            i++;
-        }
-        return (i);
+	int	n;
+	int	start;
+
+	start = ft_getidx(buffer);
+	*res = ft_memncat(*res, buffer, i - start);
+	if (!(*res))
+		return (-1);
+	n = read(fd, buffer, BUFFER_SIZE);
+	if (n == -1)
+	{
+		free(*res);
+		*res = NULL;
+		return (-1);
+	}
+	return (n);
+}
+
+/**
+ * @brief Executes a verifying/setting procedure to ensure that there is
+ * no data loss, that means only reading from the file when all data
+ * present in the buffer was consumed.
+ * @param fd The file descriptor.
+ * @param buffer The read() buffer.
+ * @param i The address to the variable that holds the index of the last
+ * characted computed.
+ * @return The number of characters populated in the buffer.
+ */
+static int	ft_init(int fd, char *buffer, int *i)
+{
+	int	n;
+
+	*i = ft_getidx(buffer);
+	if (*i == BUFFER_SIZE)
+	{
+		n = read(fd, buffer, BUFFER_SIZE);
+		*i = ft_getidx(buffer);
+	}
+	else
+		n = *i + ft_strlen(&(buffer[*i]));
+	return (n);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE];
-	char	*res;
+	char		*res;
 	int			i;
 	int			n;
 
 	n = 0;
-	res = "\0";
-	i = ft_getidx(buffer);
-	
-	/*printf("i is %d, buffer -> [", i);
-	for(int j = 0; j < BUFFER_SIZE; j++)
-		printf("'%c%s'", (buffer[j] == '\n') ? '\0' : buffer[j], (buffer[j] == '\n') ? "\\n" : "");
-	printf("]\n");*/
-	
-	if (i == BUFFER_SIZE)
-	{
-		//printf("Trying to read something...\n");
-		n = read(fd, buffer, BUFFER_SIZE); //tudo foi lindo ou analogamente nada foi computado do arquivo para o buffer
-		/*printf("buffer -> '");
-		for (int j = 0; j < BUFFER_SIZE; j++)
-			printf("%c%s", (buffer[j] == '\n') ? '\0' : buffer[j], (buffer[j] == '\n') ? "\\n" : "");
-		printf("'\n");*/
-		i = ft_getidx(buffer);
-	}else{
-		n = i + ft_strlen(&(buffer[i]));
-	}
+	res = NULL;
+	n = ft_init(fd, buffer, &i);
 	while (n > 0)
 	{
-		//printf("reading [%d]'%c%s'\n" , i, (buffer[i] == '\n') ? '\0' : buffer[i], (buffer[i] == '\n') ? "\\n" : "");
 		if (i >= n)
 		{
-			//printf("Idx overflow: getidx -> %d, i -> %d\n", ft_getidx(buffer), i);
-			res = ft_memncat(res, buffer, i - ft_getidx(buffer));
-			n = read(fd, buffer, BUFFER_SIZE);
+			n = ft_flush(fd, buffer, &res, i);
 			i = 0;
-			continue;
 		}
-		if (buffer[i] == '\n')
-		{
-			//printf("\n\\n encountered!\n");
-			return (ft_memncat(res, buffer, (i + 1) - ft_getidx(buffer)));
-		}
-		i++;
-		
+		else if (buffer[i++] == '\n')
+			return (ft_memncat(res, buffer, i - ft_getidx(buffer)));
 	}
-	//printf("returning because n is %d\n", n);
-	if (n == -1)
-		return (NULL);
 	return (res);
-}
-
-#include <fcntl.h>
-
-int main()
-{
-	int fd = open("lol", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("\nERROR TRYING TO OPEN FILE\n");
-		return (1);	
-	}
-	printf("\033[0;32mFirst instance of get_next_line\033[0m\n");
-	printf("%s", get_next_line(fd));
-	printf("\033[0;32mSecond instance of get_next_line\033[0m\n");
-	printf("%s", get_next_line(fd));
-	printf("\033[0;32mThird instance of get_next_line\033[0m\n");
-	printf("%s", get_next_line(fd));
-	printf("|END|\n");
-	return (0);
 }
