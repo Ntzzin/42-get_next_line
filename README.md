@@ -2,7 +2,6 @@
 <img id="myGif" src="https://media.giphy.com/media/3zg3hio6sYNuEzSdck/giphy.gif?cid=bb5a1c3anj7z98e5eaqln3iiutv8xokgtusytx063cawgsre&ep=v1_gifs_trending&rid=giphy.gif&ct=g" alt="demo">
 
 <script>
-  // espera 2 segundos e troca para o gif animado
   setTimeout(() => {
     document.getElementById('myGif').src = 'https://media.giphy.com/media/3zg3hio6sYNuEzSdck/giphy.gif?cid=bb5a1c3anj7z98e5eaqln3iiutv8xokgtusytx063cawgsre&ep=v1_gifs_trending&rid=giphy.gif&ct=g';
   }, 2000); // 2000 ms = 2s
