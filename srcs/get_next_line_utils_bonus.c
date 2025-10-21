@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:45:54 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/21 11:23:34 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:37:17 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,8 @@ void	*ft_calloc(size_t nmemb, size_t size)
 }
 
 /**
- * @brief Same core functionality as strlen(3) but with an adaptation to how
- * some cases are interpreted in this project: it skips all the NULL
- * characters and only starts to count passed any other character.
- * @warning This function is very dangerous due to the lack of any safety
- * verifications incurring in a high risk of reading invalid memory, for
- * this reason it is only used when the implementation itself ensure
- * that it will not happen.
+ * @brief Same core functionality as strlen(3) but with catch,
+ * it returns 0 if the pointer to the string is NULL.
  */
 size_t	ft_strlenx(const char *s)
 {
