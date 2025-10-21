@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:37:04 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/19 15:57:57 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:23:49 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	ft_init(int fd, char *buffer, int *i)
 		*i = ft_getidx(buffer);
 	}
 	else
-		n = *i + ft_strlen(&(buffer[*i]));
+		n = *i + ft_strlenx(&(buffer[*i]));
 	return (n);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 11:45:54 by nado-nas          #+#    #+#             */
-/*   Updated: 2025/10/19 15:57:53 by nado-nas         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:23:45 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * this reason it is only used when the implementation itself ensure
  * that it will not happen.
  */
-size_t	ft_strlen(const char *s)
+size_t	ft_strlenx(const char *s)
 {
 	size_t	i;
 
@@ -42,7 +42,7 @@ size_t	ft_strlen(const char *s)
  * this reason it is only used when the implementation itself ensure
  * that it will not happen.
  */
-static char	*ft_strncpy(char *dst, char *sbuff, size_t dsize)
+static char	*ft_strncpyx(char *dst, char *sbuff, size_t dsize)
 {
 	int	i;
 	int	j;
@@ -91,7 +91,7 @@ char	*ft_memncat(char *s1, char *s2, int n)
 	char	*cat;
 	size_t	s1_len;
 
-	s1_len = ft_strlen(s1);
+	s1_len = ft_strlenx(s1);
 	cat = malloc(s1_len + n + 1);
 	if (!cat)
 	{
@@ -100,8 +100,8 @@ char	*ft_memncat(char *s1, char *s2, int n)
 		return (NULL);
 	}
 	if (s1)
-		ft_strncpy(cat, s1, s1_len);
-	ft_strncpy(cat + s1_len, s2, n);
+		ft_strncpyx(cat, s1, s1_len);
+	ft_strncpyx(cat + s1_len, s2, n);
 	cat[s1_len + n] = '\0';
 	if (s1)
 		free(s1);
